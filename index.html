@@ -70,14 +70,17 @@
             </div>
         </div>
 
-        <!-- Scrape and Download buttons -->
-        <div class="flex w-full max-w-xl justify-center space-x-4 mb-8">
-          <button id="scrape-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-white space-x-2 bg-purple-600 hover:bg-purple-700">
-              <span>Scrape Posts</span>
-          </button>
-          <button id="download-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-white space-x-2 bg-zinc-700 hover:bg-zinc-600 opacity-50 cursor-not-allowed">
-              <span>Download Posts</span>
-          </button>
+        <!-- Scrape and Download buttons and post limit toggle -->
+        <div class="flex flex-col sm:flex-row w-full max-w-xl justify-center items-center sm:space-x-4 space-y-4 sm:space-y-0 mb-8">
+            <button id="post-limit-toggle-btn" class="py-3 px-6 rounded-full font-semibold transition-colors duration-300 text-white bg-zinc-700 hover:bg-zinc-600">
+                Posts: 10
+            </button>
+            <button id="scrape-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-white space-x-2 bg-purple-600 hover:bg-purple-700">
+                <span>Scrape Posts</span>
+            </button>
+            <button id="download-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-white space-x-2 bg-zinc-700 hover:bg-zinc-600 opacity-50 cursor-not-allowed">
+                <span>Download Posts</span>
+            </button>
         </div>
 
         <!-- Display area for scraped content -->
@@ -103,6 +106,7 @@
             <h2 class="text-2xl font-bold mb-4 text-center">API Settings</h2>
             <p class="text-zinc-400 mb-6 text-center">
                 Enter your Reddit developer credentials to connect.
+                <a href="https://youtu.be/0mGpBxuYmpU?si=AwzGyUEnHsrAlW7d" target="_blank" rel="noopener noreferrer" class="text-purple-400 hover:underline">don't know how</a>
             </p>
 
             <!-- Client ID input -->
@@ -155,7 +159,8 @@
             const subredditsListContainer = document.getElementById('subreddits-list-container');
             const subredditsList = document.getElementById('subreddits-list');
             const scrapePostsBtn = document.getElementById('scrape-posts-btn');
-            const downloadPostsBtn = document.getElementById('download-posts-btn'); // New download button
+            const downloadPostsBtn = document.getElementById('download-posts-btn');
+            const postLimitToggleBtn = document.getElementById('post-limit-toggle-btn');
             const postsContainer = document.getElementById('posts-container');
             const placeholderText = document.getElementById('placeholder-text');
             const loadingSpinner = document.getElementById('loading-spinner');
@@ -169,6 +174,7 @@
             let isScraping = false;
             let scrapedPosts = [];
             let scrapingError = null;
+            let postLimit = 10;
 
             // --- Functions ---
             const toggleModal = () => {
@@ -261,7 +267,7 @@
                     placeholderText.classList.remove('hidden');
                     postsContainer.classList.add('justify-center');
                 }
-                updateDownloadButtonState(); // Update download button state after rendering posts
+                updateDownloadButtonState();
             };
             
             const updateTestButtonState = () => {
@@ -310,6 +316,10 @@
                 downloadPostsBtn.classList.toggle('cursor-not-allowed', isDisabled);
             };
 
+            const updatePostLimitBtnState = () => {
+                postLimitToggleBtn.textContent = `Posts: ${postLimit}`;
+            };
+
             // --- Event Handlers ---
             settingsBtn.addEventListener('click', toggleModal);
             cancelBtn.addEventListener('click', toggleModal);
@@ -317,7 +327,7 @@
             saveBtn.addEventListener('click', () => {
                 saveToLocalStorage();
                 toggleModal();
-                connectionStatus = 'idle'; // Reset status after saving
+                connectionStatus = 'idle';
                 updateTestButtonState();
             });
 
@@ -383,6 +393,11 @@
                 }
             });
 
+            postLimitToggleBtn.addEventListener('click', () => {
+                postLimit = postLimit === 10 ? 100 : 10;
+                updatePostLimitBtnState();
+            });
+
             scrapePostsBtn.addEventListener('click', async () => {
                 if (subreddits.length === 0) {
                     scrapingError = 'Please add at least one subreddit to scrape.';
@@ -396,7 +411,6 @@
                 renderPosts();
                 updateScrapeButtonState();
 
-                // First, get the access token
                 const credentials = btoa(`${clientIdInput.value}:${clientSecretInput.value}`);
                 let accessToken = null;
                 try {
@@ -421,11 +435,10 @@
                     return;
                 }
 
-                // Now, scrape the posts from each subreddit
                 let allPosts = [];
                 for (const subreddit of subreddits) {
                     try {
-                        const postsResponse = await fetch(`https://oauth.reddit.com/r/${subreddit}/top.json?limit=10&t=month`, {
+                        const postsResponse = await fetch(`https://oauth.reddit.com/r/${subreddit}/top.json?limit=${postLimit}&t=month`, {
                             headers: {
                                 'Authorization': `bearer ${accessToken}`,
                                 'User-Agent': 'my-reddit-scraper/1.0.0'
@@ -442,7 +455,7 @@
                                 score: child.data.score,
                                 url: `https://www.reddit.com${child.data.permalink}`,
                                 thumbnail: child.data.thumbnail.startsWith('http') ? child.data.thumbnail : null,
-                                text: child.data.selftext // This field contains the post body
+                                text: child.data.selftext
                             }));
                             allPosts = [...allPosts, ...postsFromSubreddit];
                         } else {
@@ -461,13 +474,12 @@
                 updateScrapeButtonState();
             });
 
-            // Handle the download functionality
             downloadPostsBtn.addEventListener('click', () => {
                 if (scrapedPosts.length === 0) {
                     return;
                 }
 
-                let markdownContent = `# Top Reddit Posts\n\nThis file contains the top 10 posts of the last month from the selected subreddits.\n\n---\n\n`;
+                let markdownContent = `# Top Reddit Posts\n\nThis file contains the top ${postLimit} posts of the last month from the selected subreddits.\n\n---\n\n`;
 
                 scrapedPosts.forEach(post => {
                     markdownContent += `## ${post.title}\n`;
@@ -489,10 +501,10 @@
                 URL.revokeObjectURL(url);
             });
 
-
             // --- Initial Load ---
             loadFromLocalStorage();
             renderPosts();
+            updatePostLimitBtnState();
         });
     </script>
 </body>
