@@ -3,29 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chuffed Reddit Scraper</title>
+    <title>Reddit Scraper</title>
     <!-- Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Lucide Icons for vector graphics -->
     <script src="https://cdn.jsdelivr.net/npm/lucide-preact@0.320.0/dist/lucide-preact.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #191919;
-            color: #E6FEF7;
+            background-color: #18181b; /* zinc-900 */
+            color: #fff;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            /* Dot grid background as per brand guidelines */
-            background-image: radial-gradient(#242424 1px, transparent 1px);
-            background-size: 16px 16px;
-        }
-
-        h1, h2 {
-            font-family: 'JetBrains Mono', monospace;
         }
 
         .icon {
@@ -50,32 +39,32 @@
 <body class="min-h-screen p-8">
 
     <!-- Settings button in the top-right corner -->
-    <div class="absolute top-[16px] right-[16px] z-50">
-        <button id="settings-btn" class="p-4 bg-[#303030] rounded-full shadow-lg hover:bg-zinc-700 transition-colors duration-200" aria-label="Open settings">
-            <svg class="icon text-[#E6FEF7]" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.25.43a2 2 0 0 0 .73 2.73l.09.15a2 2 0 0 1 0 2.73l-.09.15a2 2 0 0 0-.73 2.73l.25.43a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.25-.43a2 2 0 0 0-.73-2.73l-.09-.15a2 2 0 0 1 0-2.73l.09-.15a2 2 0 0 0 .73-2.73l-.25-.43a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    <div class="absolute top-8 right-8 z-50">
+        <button id="settings-btn" class="p-3 bg-zinc-800 rounded-full shadow-lg hover:bg-zinc-700 transition-colors duration-200" aria-label="Open settings">
+            <svg class="icon text-zinc-400" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.25.43a2 2 0 0 0 .73 2.73l.09.15a2 2 0 0 1 0 2.73l-.09.15a2 2 0 0 0-.73 2.73l.25.43a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.25-.43a2 2 0 0 0-.73-2.73l-.09-.15a2 2 0 0 1 0-2.73l.09-.15a2 2 0 0 0 .73-2.73l-.25-.43a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
     </div>
 
     <!-- Main content area -->
     <div class="flex flex-col items-center flex-1 w-full max-w-2xl mx-auto text-center mt-20">
-        <h1 class="text-5xl font-extrabold tracking-tight mb-4 text-[#FAEA95]">
+        <h1 class="text-5xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
             Chuffed Reddit Scraper
         </h1>
-        <p class="text-lg text-[#E6FEF7] mb-8">
+        <p class="text-lg text-zinc-400 mb-8">
             Enter your API credentials to begin.
         </p>
 
         <!-- Subreddit Search Bar and Add Button -->
-        <div class="flex w-full max-w-xl mb-[16px] space-x-2">
-            <input type="text" id="subreddit-input" class="flex-1 p-[16px] bg-[#303030] rounded-lg text-[#E6FEF7] border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#F6084C] transition-colors" placeholder="Enter a subreddit name (e.g., reactjs)" />
-            <button id="add-subreddit-btn" class="p-4 bg-[#F6084C] rounded-lg text-[#E6FEF7] shadow-lg hover:bg-[#d80743] transition-colors duration-200" aria-label="Add subreddit">
+        <div class="flex w-full max-w-xl mb-4 space-x-2">
+            <input type="text" id="subreddit-input" class="flex-1 p-3 bg-zinc-800 rounded-lg text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors" placeholder="Enter a subreddit name (e.g., reactjs)" />
+            <button id="add-subreddit-btn" class="p-3 bg-purple-600 rounded-lg text-white shadow-lg hover:bg-purple-700 transition-colors duration-200" aria-label="Add subreddit">
                 <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
             </button>
         </div>
 
         <!-- Display list of added subreddits -->
         <div id="subreddits-list-container" class="w-full max-w-2xl hidden">
-            <div class="bg-[#303030] w-full p-6 rounded-xl shadow-lg border border-zinc-700 mb-4">
+            <div class="bg-zinc-800 w-full p-6 rounded-xl shadow-lg border border-zinc-700 mb-4">
                 <h2 class="text-lg font-semibold mb-4 text-left">Subreddits to Scrape:</h2>
                 <ul id="subreddits-list" class="space-y-2 text-left"></ul>
             </div>
@@ -83,27 +72,27 @@
 
         <!-- Scrape and Download buttons and post limit toggle -->
         <div class="flex flex-col sm:flex-row w-full max-w-xl justify-center items-center sm:space-x-4 space-y-4 sm:space-y-0 mb-8">
-            <button id="post-limit-toggle-btn" class="py-3 px-6 rounded-full font-semibold transition-colors duration-300 text-[#E6FEF7] bg-[#303030] hover:bg-zinc-600">
+            <button id="post-limit-toggle-btn" class="py-3 px-6 rounded-full font-semibold transition-colors duration-300 text-white bg-zinc-700 hover:bg-zinc-600">
                 Posts: 10
             </button>
-            <button id="scrape-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-[#E6FEF7] space-x-2 bg-[#F6084C] hover:bg-[#d80743]">
+            <button id="scrape-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-white space-x-2 bg-purple-600 hover:bg-purple-700">
                 <span>Scrape Posts</span>
             </button>
-            <button id="download-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-[#E6FEF7] space-x-2 bg-[#303030] hover:bg-zinc-600 opacity-50 cursor-not-allowed">
+            <button id="download-posts-btn" class="py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-white space-x-2 bg-zinc-700 hover:bg-zinc-600 opacity-50 cursor-not-allowed">
                 <span>Download Posts</span>
             </button>
         </div>
 
         <!-- Display area for scraped content -->
-        <div id="posts-container" class="bg-[#303030] w-full p-8 rounded-xl shadow-lg border border-zinc-700 min-h-[300px] flex items-center justify-center">
+        <div id="posts-container" class="bg-zinc-800 w-full p-8 rounded-xl shadow-lg border border-zinc-700 min-h-[300px] flex items-center justify-center">
             <p id="placeholder-text" class="text-zinc-500">
                 Add subreddits above and click "Scrape Posts" to begin.
             </p>
             <div id="loading-spinner" class="hidden flex-col items-center">
-                <svg class="icon text-[#F6084C] animate-spin" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-                <p class="text-[#E6FEF7] mt-4">Scraping posts, please wait...</p>
+                <svg class="icon text-purple-400 animate-spin" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                <p class="text-zinc-400 mt-4">Scraping posts, please wait...</p>
             </div>
-            <div id="error-message" class="hidden flex-col items-center text-[#F6084C]">
+            <div id="error-message" class="hidden flex-col items-center text-red-400">
                 <svg class="icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
                 <p class="text-center mt-4"></p>
             </div>
@@ -113,42 +102,42 @@
 
     <!-- Settings Modal -->
     <div id="settings-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] p-4">
-        <div class="bg-[#303030] p-8 rounded-xl shadow-2xl max-w-md w-full border border-zinc-700">
+        <div class="bg-zinc-800 p-8 rounded-xl shadow-2xl max-w-md w-full border border-zinc-700">
             <h2 class="text-2xl font-bold mb-4 text-center">API Settings</h2>
-            <p class="text-[#E6FEF7] mb-6 text-center">
+            <p class="text-zinc-400 mb-6 text-center">
                 Enter your Reddit developer credentials to connect.
-                <a href="https://youtu.be/0mGpBxuYmpU?si=AwzGyUEnHsrAlW7d" target="_blank" rel="noopener noreferrer" class="text-[#F6084C] hover:underline">don't know how</a>
+                <a href="https://youtu.be/0mGpBxuYmpU?si=AwzGyUEnHsrAlW7d" target="_blank" rel="noopener noreferrer" class="text-purple-400 hover:underline">don't know how</a>
             </p>
 
             <!-- Client ID input -->
             <div class="mb-4">
-                <label for="clientId" class="block text-[#E6FEF7] text-sm font-semibold mb-2">
+                <label for="clientId" class="block text-zinc-300 text-sm font-semibold mb-2">
                     Client ID
                 </label>
-                <input type="text" id="clientId" class="w-full p-4 bg-[#191919] rounded-lg text-[#E6FEF7] border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-[#F6084C] transition-colors" placeholder="Enter your client ID" />
+                <input type="text" id="clientId" class="w-full p-3 bg-zinc-700 rounded-lg text-white border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors" placeholder="Enter your client ID" />
             </div>
 
             <!-- Client Secret input -->
             <div class="mb-6">
-                <label for="clientSecret" class="block text-[#E6FEF7] text-sm font-semibold mb-2">
+                <label for="clientSecret" class="block text-zinc-300 text-sm font-semibold mb-2">
                     Client Secret
                 </label>
-                <input type="password" id="clientSecret" class="w-full p-4 bg-[#191919] rounded-lg text-[#E6FEF7] border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-[#F6084C] transition-colors" placeholder="Enter your client secret" />
+                <input type="password" id="clientSecret" class="w-full p-3 bg-zinc-700 rounded-lg text-white border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors" placeholder="Enter your client secret" />
             </div>
 
             <!-- Test Connection Button -->
             <div class="mb-6 text-center">
-                <button id="test-connection-btn" class="py-2 px-6 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center mx-auto space-x-2 bg-[#191919] hover:bg-zinc-700">
+                <button id="test-connection-btn" class="py-2 px-6 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center mx-auto text-white space-x-2 bg-zinc-700 hover:bg-zinc-600">
                     <span>Test Connection</span>
                 </button>
             </div>
 
             <!-- Action buttons -->
             <div class="flex justify-end space-x-4">
-                <button id="cancel-btn" class="py-2 px-4 bg-[#191919] text-[#E6FEF7] rounded-lg hover:bg-zinc-700 transition-colors duration-200">
+                <button id="cancel-btn" class="py-2 px-4 bg-zinc-700 text-zinc-300 rounded-lg hover:bg-zinc-600 transition-colors duration-200">
                     Cancel
                 </button>
-                <button id="save-btn" class="py-2 px-4 bg-[#F6084C] text-[#E6FEF7] font-semibold rounded-lg shadow-lg hover:bg-[#d80743] transition-colors duration-200">
+                <button id="save-btn" class="py-2 px-4 bg-purple-600 text-white font-semibold rounded-lg shadow-lg hover:bg-purple-700 transition-colors duration-200">
                     Save Credentials
                 </button>
             </div>
@@ -222,10 +211,10 @@
                     subredditsListContainer.classList.remove('hidden');
                     subreddits.forEach(sub => {
                         const li = document.createElement('li');
-                        li.className = 'flex justify-between items-center bg-[#191919] p-[16px] rounded-lg';
+                        li.className = 'flex justify-between items-center bg-zinc-700 p-3 rounded-lg';
                         li.innerHTML = `
-                            <span class="text-[#E6FEF7]">r/${sub}</span>
-                            <button class="remove-btn p-1 text-[#F6084C] hover:text-red-500 transition-colors duration-200" data-subreddit="${sub}" aria-label="Remove r/${sub}">
+                            <span class="text-zinc-300">r/${sub}</span>
+                            <button class="remove-btn p-1 text-red-400 hover:text-red-500 transition-colors duration-200" data-subreddit="${sub}" aria-label="Remove r/${sub}">
                                 <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                             </button>
                         `;
@@ -256,18 +245,18 @@
                     scrapedContentList.innerHTML = '';
                     scrapedPosts.forEach(post => {
                         const postDiv = document.createElement('div');
-                        postDiv.className = 'bg-[#191919] p-4 rounded-lg flex items-start space-x-4';
+                        postDiv.className = 'bg-zinc-700 p-4 rounded-lg flex items-start space-x-4';
                         const thumbnailHtml = post.thumbnail ? `<img src="${post.thumbnail}" alt="Thumbnail" class="w-16 h-16 rounded-lg object-cover flex-shrink-0" />` : '';
                         postDiv.innerHTML = `
                             ${thumbnailHtml}
                             <div class="flex-1 text-left">
-                                <h3 class="text-lg font-semibold text-[#F6084C] hover:underline">
+                                <h3 class="text-lg font-semibold text-purple-400 hover:underline">
                                     <a href="${post.url}" target="_blank" rel="noopener noreferrer">
                                         ${post.title}
                                     </a>
                                 </h3>
-                                <p class="text-sm text-[#E6FEF7] mt-1">
-                                    by <span class="font-medium text-[#E6FEF7]">${post.author}</span> in <span class="font-medium text-[#E6FEF7]">r/${post.subreddit}</span>
+                                <p class="text-sm text-zinc-400 mt-1">
+                                    by <span class="font-medium text-zinc-300">${post.author}</span> in <span class="font-medium text-zinc-300">r/${post.subreddit}</span>
                                 </p>
                                 <p class="text-xs text-zinc-500 mt-2">Score: ${post.score}</p>
                             </div>
@@ -296,10 +285,10 @@
                     'idle': 'Test Connection'
                 }[connectionStatus];
 
-                testConnectionBtn.className = `py-2 px-6 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center mx-auto space-x-2 ${
-                    connectionStatus === 'loading' ? 'bg-[#0DF1B1] cursor-not-allowed text-[#E6FEF7]' :
-                    connectionStatus === 'success' ? 'bg-[#0DF1B1] text-[#303030]' :
-                    connectionStatus === 'error' ? 'bg-[#FF00FF] text-[#E6FEF7]' : 'bg-[#191919] hover:bg-zinc-700 text-[#E6FEF7]'
+                testConnectionBtn.className = `py-2 px-6 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center mx-auto text-white space-x-2 ${
+                    connectionStatus === 'loading' ? 'bg-blue-600 cursor-not-allowed' :
+                    connectionStatus === 'success' ? 'bg-green-600' :
+                    connectionStatus === 'error' ? 'bg-red-600' : 'bg-zinc-700 hover:bg-zinc-600'
                 }`;
                 testConnectionBtn.innerHTML = `${iconHtml || ''} <span>${text}</span>`;
             };
@@ -313,8 +302,8 @@
                     : '';
                 const text = isScraping ? 'Scraping...' : 'Scrape Posts';
                 
-                scrapePostsBtn.className = `py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-[#E6FEF7] space-x-2 
-                    ${isScraping ? 'bg-blue-600 cursor-not-allowed' : 'bg-[#F6084C] hover:bg-[#d80743]'}
+                scrapePostsBtn.className = `py-3 px-8 rounded-full font-semibold transition-colors duration-300 flex items-center justify-center text-white space-x-2 
+                    ${isScraping ? 'bg-blue-600 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-700'}
                     ${subreddits.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}
                 `;
                 scrapePostsBtn.innerHTML = `${iconHtml}<span>${text}</span>`;
